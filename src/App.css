@@ -1,0 +1,125 @@
+.page {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.header {
+  width: 100%;
+  max-width: 640px;
+  text-align: center;
+  padding: 48px 24px 24px;
+}
+
+.header h1 {
+  font-size: 32px;
+  margin: 0 0 6px;
+  letter-spacing: -0.5px;
+}
+
+.subtitle {
+  font-size: 16px;
+  color: var(--color-accent);
+  font-weight: 500;
+  margin-bottom: 12px;
+}
+
+.description {
+  font-size: 15px;
+  color: var(--color-text-muted);
+}
+
+.content {
+  width: 100%;
+  max-width: 640px;
+  padding: 8px 24px 48px;
+}
+
+.request-form {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.form-heading {
+  font-size: 20px;
+  margin: 0 0 8px;
+}
+
+.field-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-text-muted);
+}
+
+.request-textarea {
+  width: 100%;
+  font: inherit;
+  font-size: 15px;
+  padding: 12px 14px;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  resize: vertical;
+  color: var(--color-text);
+  background: var(--color-bg);
+}
+
+.request-textarea:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 1px;
+}
+
+.request-textarea:disabled {
+  opacity: 0.6;
+}
+
+.form-error {
+  font-size: 14px;
+  color: var(--color-error);
+  background: var(--color-error-bg);
+  border-radius: 8px;
+  padding: 10px 12px;
+}
+
+.submit-button {
+  align-self: flex-start;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  color: #fff;
+  background: var(--color-accent);
+  border: none;
+  border-radius: 8px;
+  padding: 12px 24px;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.submit-button:hover:not(:disabled) {
+  background: var(--color-accent-hover);
+}
+
+.submit-button:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.submit-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+@media (max-width: 480px) {
+  .request-form {
+    padding: 24px;
+  }
+
+  .submit-button {
+    align-self: stretch;
+  }
+}
