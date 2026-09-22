@@ -1,14 +1,17 @@
 import { useState } from 'react'
 import type { FormEvent } from 'react'
 import './App.css'
+import RequestResult from './components/RequestResult'
+import { N8nClientError, submitRequest } from './services/n8nClient'
+import type { OpsFlowResponse } from './types/opsflow'
 
 function App() {
   const [requestText, setRequestText] = useState('')
   const [error, setError] = useState<string | null>(null)
-  // Wired up in Phase 3 once the n8n webhook submission is implemented.
-  const isSubmitting = false
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [result, setResult] = useState<OpsFlowResponse | null>(null)
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
 
     if (!requestText.trim()) {
@@ -17,8 +20,21 @@ function App() {
     }
 
     setError(null)
+    setResult(null)
+    setIsSubmitting(true)
 
-    // n8n webhook submission will be implemented in Phase 3.
+    try {
+      const response = await submitRequest(requestText)
+      setResult(response)
+    } catch (err) {
+      if (err instanceof N8nClientError) {
+        setError(err.message)
+      } else {
+        setError('Something went wrong while processing your request. Please try again.')
+      }
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
@@ -58,6 +74,8 @@ function App() {
             {isSubmitting ? 'Analyzing request...' : 'Submit Request'}
           </button>
         </form>
+
+        {result && <RequestResult result={result} />}
       </main>
     </div>
   )

@@ -1,0 +1,73 @@
+.result {
+  margin-top: 24px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 32px;
+}
+
+.result-heading {
+  font-size: 20px;
+  margin: 0 0 20px;
+  color: var(--color-accent);
+}
+
+.result-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px 24px;
+  margin: 0;
+}
+
+.result-item dt {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  margin-bottom: 2px;
+}
+
+.result-item dd {
+  margin: 0;
+  font-size: 15px;
+  color: var(--color-text);
+}
+
+.result-knowledge {
+  margin-top: 28px;
+  padding-top: 20px;
+  border-top: 1px solid var(--color-border);
+}
+
+.result-knowledge h3 {
+  font-size: 16px;
+  margin: 0 0 8px;
+}
+
+.knowledge-title {
+  font-weight: 600;
+  margin: 0 0 10px;
+}
+
+.knowledge-response {
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--color-text);
+  margin: 0;
+  white-space: pre-wrap;
+}
+
+.result-knowledge--empty p {
+  font-size: 14px;
+  color: var(--color-text-muted);
+  margin: 0;
+}
+
+@media (max-width: 480px) {
+  .result {
+    padding: 24px;
+  }
+
+  .result-grid {
+    grid-template-columns: 1fr;
+  }
+}
