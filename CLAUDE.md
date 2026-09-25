@@ -150,12 +150,12 @@ diagrams, referenced from `README.md`. Naming distinguishes them:
 `aurelia-*-center.png` / `aurelia-*-page.png` / `aurelia-processing-
 breakdown.png` are React UI screenshots; `aurelia-*-workflow.png` are n8n
 automation diagrams. Don't assume which is which from a filename alone
-without checking — open the file first. A separate workflow screenshot
-(`opsflow-ai-request-intake.png`, the Operations page's n8n workflow,
-titled "OpsFlow AI — Request Intake") is intentionally kept out of
-`docs/screenshots/` since it documents the pre-rebrand OpsFlow AI project
-name specifically, even though the Operations page it powers is part of
-this same Aurelia AI app today.
+without checking — open the file first. This includes
+`aurelia-operations-workflow.png`, the n8n workflow behind the Operations
+page — internally titled "OpsFlow AI — Request Intake" (the product's
+name before the Aurelia AI rebrand), but it belongs in this directory
+since it documents a workflow that is part of this same Aurelia AI app
+today.
 
 ## 10. Technology / Constraints
 

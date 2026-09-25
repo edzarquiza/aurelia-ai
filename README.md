@@ -237,12 +237,13 @@ prioritized result. It remains available from the same navigation, sharing
 the Aurelia AI brand shell, but is otherwise unaffected by the Invoice
 Control Center work above.*
 
-This page's own n8n workflow is named "OpsFlow AI — Request Intake"
-internally (the product's name before the Aurelia AI rebrand). That
-workflow diagram documents the earlier OpsFlow AI project scope
-specifically, so it's kept out of `docs/screenshots/` rather than
-presented alongside the Aurelia Invoice Control assets — even though the
-page itself is part of this same Aurelia AI application today.
+![Operations page n8n workflow](docs/screenshots/aurelia-operations-workflow.png)
+*The n8n workflow behind this page, internally named "OpsFlow AI — Request
+Intake" (the product's name before the Aurelia AI rebrand): request
+classification, priority/SLA calculation, human-review routing, and
+knowledge-base lookup, orchestrated end to end. The frontend renders
+exactly what this workflow returns — category, routing, priority, SLA, and
+processing mode are never recomputed in React.*
 
 ## Operational Monitoring Workflow
 
@@ -395,8 +396,7 @@ src/
 sample-invoices/                 # 8 synthetic test PDFs + README.txt
 ```
 
-`docs/screenshots/` currently contains only Aurelia Invoice Control
-assets:
+`docs/screenshots/` contains:
 
 | File | Shows |
 |---|---|
@@ -407,11 +407,7 @@ assets:
 | `aurelia-invoice-control-workflow.png` | n8n workflow: `invoice-control` |
 | `aurelia-attention-workflow.png` | n8n workflow: `invoice-operations` |
 | `aurelia-kpi-workflow.png` | n8n workflow: `invoice-kpis` |
-
-The Operations page's own n8n workflow diagram ("OpsFlow AI — Request
-Intake") documents the earlier OpsFlow AI project scope and is
-intentionally not included in this directory, even though the Operations
-page's UI screenshot above is.
+| `aurelia-operations-workflow.png` | n8n workflow behind the Operations page (internally named "OpsFlow AI — Request Intake") |
 
 ## Engineering Notes
 
