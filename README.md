@@ -6,6 +6,12 @@ deterministic business validation, duplicate detection, exception handling,
 automation auditing, and operational monitoring into one operator-facing
 application.
 
+![Aurelia AI Invoice Control Center](docs/screenshots/aurelia-invoice-control-center.png)
+*The unified Aurelia AI Invoice Control Center: live KPI strip (Total
+Invoices, Exceptions, Exception Rate, Automation Failure) above the
+Process Invoice panel, where a PDF is uploaded and submitted for
+processing.*
+
 This repository contains the **React frontend**. The n8n workflow,
 PostgreSQL database, and local Ollama model that power the automation are
 maintained separately and are not included in this repository (see
@@ -13,14 +19,14 @@ maintained separately and are not included in this repository (see
 
 ## Overview
 
-Manual invoice processing typically involves reading a document, verifying
-the vendor, checking the invoice against an approved purchase order,
-watching for duplicates, and flagging anything that doesn't line up —
-work that is repetitive but still requires judgment calls when something
-looks wrong.
+**The business problem:** manual invoice processing typically involves
+reading a document, verifying the vendor, checking the invoice against an
+approved purchase order, watching for duplicates, and flagging anything
+that doesn't line up — repetitive work that still requires judgment calls
+when something looks wrong.
 
-Aurelia AI demonstrates one way to automate that workflow while keeping the
-important decisions deterministic and auditable:
+**The solution Aurelia AI demonstrates:** automate the repetitive parts
+while keeping the important decisions deterministic and auditable.
 
 - **AI-assisted extraction** — a local language model reads the invoice
   document and extracts structured fields (vendor, invoice number, amount,
@@ -35,7 +41,7 @@ This is a demo/portfolio system built on synthetic data. It is not
 connected to a real ERP or accounting system, and no production deployment
 or real-world accuracy claim is made.
 
-## What the System Does
+## How It Works
 
 ```
 PDF or text invoice
@@ -62,7 +68,62 @@ upload**. The workflow is designed around text-based PDF extraction, so
 the "text extraction" step above is n8n reading the PDF's text layer, not
 OCR of a scanned image.
 
-## Core Controls
+## Automation Architecture
+
+![Aurelia AI invoice-control n8n workflow](docs/screenshots/aurelia-invoice-control-workflow.png)
+*The n8n automation workflow behind `POST /webhook/invoice-control` —
+PDF extraction, AI field extraction, vendor/PO validation, duplicate
+detection, and audit persistence, orchestrated end to end. This is the
+backend automation graph, not the web application shown above.*
+
+At a high level, the n8n workflow behind `POST /webhook/invoice-control`
+does the following:
+
+```
+Webhook (PDF upload)
+   → Prepare automation context / audit record
+   → Extract PDF text
+   → AI structured extraction (Ollama / Qwen)
+   → Parse/validate extracted JSON
+   → Vendor lookup (PostgreSQL)
+   → Purchase-order lookup (PostgreSQL)
+   → Amount / currency validation
+   → Duplicate check
+   → Business control evaluation → processing_status
+   → Update automation run + audit records
+   → Return structured JSON response
+```
+
+A separate error-handling path captures failures at any stage (missing
+required fields, lookup failures, unexpected errors) and records them as
+`FAILED` automation runs rather than letting them fail silently — this is
+what powers the Attention Center's "Failed" and "Incomplete" categories.
+
+The n8n workflow itself (its nodes, prompts, and rule configuration) is
+maintained outside this repository. This README describes its externally
+observable behavior — the request/response contract and the monitoring
+data it produces — not its internal implementation, beyond what the
+workflow screenshot above shows.
+
+## AI-Assisted Extraction
+
+Extraction is performed by a locally hosted **Ollama** instance running
+**Qwen 3 4B**. The model's job is narrow and specific: read the invoice
+text and return structured fields as JSON (vendor, invoice number, dates,
+PO number, amount, currency). It does not decide whether the invoice is
+valid.
+
+Everything downstream of extraction — vendor lookup, PO lookup, amount and
+currency checks, duplicate detection — is deterministic workflow logic
+evaluated against PostgreSQL reference data. This separation is
+intentional: an LLM is well suited to turning unstructured text into
+structured data, but a fixed, auditable rule set is what should decide
+whether a payment control passes or fails.
+
+No accuracy benchmark for the extraction step is published in this
+repository, and none is claimed.
+
+## Deterministic Business Controls
 
 These are the controls actually implemented in the current workflow, as
 represented in the invoice-control response contract and the operations
@@ -97,55 +158,7 @@ attention/KPI data the frontend consumes:
 - **KPI monitoring** — invoice and automation counts/rates are aggregated
   and exposed to the frontend.
 
-## AI Architecture
-
-Extraction is performed by a locally hosted **Ollama** instance running
-**Qwen 3 4B**. The model's job is narrow and specific: read the invoice
-text and return structured fields as JSON (vendor, invoice number, dates,
-PO number, amount, currency). It does not decide whether the invoice is
-valid.
-
-Everything downstream of extraction — vendor lookup, PO lookup, amount and
-currency checks, duplicate detection — is deterministic workflow logic
-evaluated against PostgreSQL reference data. This separation is
-intentional: an LLM is well suited to turning unstructured text into
-structured data, but a fixed, auditable rule set is what should decide
-whether a payment control passes or fails.
-
-No accuracy benchmark for the extraction step is published in this
-repository, and none is claimed.
-
-## Automation Architecture
-
-At a high level, the n8n workflow behind `POST /webhook/invoice-control`
-does the following:
-
-```
-Webhook (PDF upload)
-   → Prepare automation context / audit record
-   → Extract PDF text
-   → AI structured extraction (Ollama / Qwen)
-   → Parse/validate extracted JSON
-   → Vendor lookup (PostgreSQL)
-   → Purchase-order lookup (PostgreSQL)
-   → Amount / currency validation
-   → Duplicate check
-   → Business control evaluation → processing_status
-   → Update automation run + audit records
-   → Return structured JSON response
-```
-
-A separate error-handling path captures failures at any stage (missing
-required fields, lookup failures, unexpected errors) and records them as
-`FAILED` automation runs rather than letting them fail silently — this is
-what powers the Attention Center's "Failed" and "Incomplete" categories.
-
-The n8n workflow itself (its nodes, prompts, and rule configuration) is
-maintained outside this repository. This README describes its externally
-observable behavior — the request/response contract and the monitoring
-data it produces — not its internal implementation.
-
-## Data Model
+## PostgreSQL Data Model
 
 The workflow reads from and writes to a PostgreSQL database maintained
 outside this repository. At a conceptual level, the schema includes:
@@ -183,17 +196,31 @@ one operator workflow rather than three separate tools.
 
 ### Invoice Processing
 Drag-and-drop or browse to select a PDF invoice, then submit it for
-processing. The result — `VENDOR_PO_VALIDATED`, `EXCEPTION`, or
-`DUPLICATE` — is displayed with the extracted invoice details and, for
-exceptions/duplicates, the reason returned by the workflow.
+processing (pictured at the top of this README). The result —
+`VENDOR_PO_VALIDATED`, `EXCEPTION`, or `DUPLICATE` — is displayed with the
+extracted invoice details and, for exceptions/duplicates, the reason
+returned by the workflow.
 
 ### Attention Center
+
+![Aurelia AI Attention Center](docs/screenshots/aurelia-attention-center.png)
+*Failed/incomplete/orphaned automation runs, with a compact table (Status,
+Invoice, Vendor, Processing Status, Started, Completed, Execution ID,
+Error) and a "View all N attention items" toggle that expands to the full
+list already fetched from the backend.*
+
 Surfaces automation runs that need a human look: `FAILED`, `INCOMPLETE`,
 and `ORPHANED`, with per-record status, invoice/vendor identifiers,
-processing status, timestamps, and error messages. A compact view shows
-the most recent records with an option to expand to the full list.
+processing status, timestamps, and error messages.
 
 ### KPI / Performance
+
+![Aurelia AI processing and automation-run breakdowns](docs/screenshots/aurelia-processing-breakdown.png)
+*Processing Breakdown (Extracted, Validated, Vendor + PO Validated,
+Exceptions) and Automation Runs (Total, Completed, Failed, Started),
+rendered directly from the KPI endpoint's counts as simple CSS bars — no
+value is computed in React.*
+
 Displays invoice and automation metrics sourced directly from the backend:
 total invoices, exception invoices, exception rate, extracted/validated/
 vendor-PO-validated invoice counts, total/completed/failed/started
@@ -201,10 +228,38 @@ automation runs, and the automation failure rate. The frontend does not
 compute any of these values — it renders exactly what the KPI endpoint
 returns.
 
-A separate **Operations** page (the project's original scope, predating
-Invoice Control) remains available from the same navigation and is
-unaffected by the above — it demonstrates a simpler text-based
-operational-request workflow against its own n8n webhook.
+### Operations (separate page)
+
+![Aurelia AI Operations page](docs/screenshots/aurelia-operations-page.png)
+*The project's original scope, predating Invoice Control: a single
+textarea submits a free-text operational request and receives a routed,
+prioritized result. It remains available from the same navigation, sharing
+the Aurelia AI brand shell, but is otherwise unaffected by the Invoice
+Control Center work above.*
+
+This page's own n8n workflow is named "OpsFlow AI — Request Intake"
+internally (the product's name before the Aurelia AI rebrand). That
+workflow diagram documents the earlier OpsFlow AI project scope
+specifically, so it's kept out of `docs/screenshots/` rather than
+presented alongside the Aurelia Invoice Control assets — even though the
+page itself is part of this same Aurelia AI application today.
+
+## Operational Monitoring Workflow
+
+![Aurelia AI invoice-operations n8n workflow](docs/screenshots/aurelia-attention-workflow.png)
+*The n8n workflow behind `GET /webhook/invoice-operations`: it reads the
+requested attention-status filter, queries the attention records, builds
+the summary counts, and responds. The frontend's Attention Center panel
+(pictured under [Frontend](#frontend)) renders exactly this data — it does
+not compute the FAILED/INCOMPLETE/ORPHANED classification itself.*
+
+## KPI Monitoring Workflow
+
+![Aurelia AI invoice-kpis n8n workflow](docs/screenshots/aurelia-kpi-workflow.png)
+*The n8n workflow behind `GET /webhook/invoice-kpis`: it selects the
+aggregated rows and formats the KPI response. The frontend's KPI strip and
+breakdown panels (pictured under [Frontend](#frontend)) render exactly
+these values — no rate or count is recalculated in React.*
 
 ## Technology Stack
 
@@ -313,6 +368,9 @@ never directly to PostgreSQL or Ollama:
 ## Project Structure
 
 ```
+docs/
+└── screenshots/                 # UI + n8n workflow screenshots (see below)
+
 src/
 ├── components/
 │   ├── AureliaBrand.tsx        # Brand mark (SVG)
@@ -336,6 +394,24 @@ src/
 
 sample-invoices/                 # 8 synthetic test PDFs + README.txt
 ```
+
+`docs/screenshots/` currently contains only Aurelia Invoice Control
+assets:
+
+| File | Shows |
+|---|---|
+| `aurelia-invoice-control-center.png` | Invoice Control Center UI — KPI strip + Process Invoice panel |
+| `aurelia-attention-center.png` | Attention Center UI — attention table + counts |
+| `aurelia-processing-breakdown.png` | Processing Breakdown + Automation Runs UI |
+| `aurelia-operations-page.png` | Operations page UI |
+| `aurelia-invoice-control-workflow.png` | n8n workflow: `invoice-control` |
+| `aurelia-attention-workflow.png` | n8n workflow: `invoice-operations` |
+| `aurelia-kpi-workflow.png` | n8n workflow: `invoice-kpis` |
+
+The Operations page's own n8n workflow diagram ("OpsFlow AI — Request
+Intake") documents the earlier OpsFlow AI project scope and is
+intentionally not included in this directory, even though the Operations
+page's UI screenshot above is.
 
 ## Engineering Notes
 

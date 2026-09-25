@@ -143,7 +143,21 @@ Correct pattern: `status = response.processing_status`. Wrong pattern:
   prevent line-ending corruption on checkout, since these particular files
   contain no NUL bytes and would otherwise be misdetected as text)
 
-## 9. Technology / Constraints
+## 9. Documentation Assets
+
+`docs/screenshots/` holds both frontend UI screenshots and n8n workflow
+diagrams, referenced from `README.md`. Naming distinguishes them:
+`aurelia-*-center.png` / `aurelia-*-page.png` / `aurelia-processing-
+breakdown.png` are React UI screenshots; `aurelia-*-workflow.png` are n8n
+automation diagrams. Don't assume which is which from a filename alone
+without checking — open the file first. A separate workflow screenshot
+(`opsflow-ai-request-intake.png`, the Operations page's n8n workflow,
+titled "OpsFlow AI — Request Intake") is intentionally kept out of
+`docs/screenshots/` since it documents the pre-rebrand OpsFlow AI project
+name specifically, even though the Operations page it powers is part of
+this same Aurelia AI app today.
+
+## 10. Technology / Constraints
 
 - React + TypeScript + Vite, plain CSS. No router (view switching is a
   local `useState` in `App.tsx` — there are only two destinations).
@@ -151,7 +165,7 @@ Correct pattern: `status = response.processing_status`. Wrong pattern:
   Keep it that way unless there's a demonstrated need.
 - No backend/database access from the frontend, ever.
 
-## 10. Testing Expectations
+## 11. Testing Expectations
 
 Before considering any frontend change done:
 1. `npm run build` must pass.
@@ -161,7 +175,7 @@ Before considering any frontend change done:
 3. Don't claim browser-rendered visual verification unless a browser tool
    was actually used to check it.
 
-## 11. Change Control
+## 12. Change Control
 
 Before a non-trivial change, ask: does this directly improve the Aurelia
 AI Invoice Control Center or Operations demo as they actually exist today?
