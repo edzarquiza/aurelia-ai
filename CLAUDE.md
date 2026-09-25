@@ -1,12 +1,12 @@
 # CLAUDE.md
 
-# OpsFlow AI — Demo Frontend
+# Aurelia AI — Demo Frontend
 
 ## 1. Project Purpose
 
-Build a small, clean, interactive web frontend for **OpsFlow AI**.
+Build a small, clean, interactive web frontend for **Aurelia AI**.
 
-OpsFlow AI is an AI-powered operations support automation system.
+Aurelia AI is an AI-powered operations support automation system.
 
 The existing automation stack is:
 
@@ -20,7 +20,7 @@ The existing automation stack is:
 
 The purpose of this frontend is simple:
 
-> Give a user a real interface where they can submit an operational request and see the result produced by the existing OpsFlow AI n8n workflow.
+> Give a user a real interface where they can submit an operational request and see the result produced by the existing Aurelia AI n8n workflow.
 
 This is a **demo application**.
 
@@ -32,7 +32,7 @@ It is NOT a full enterprise service-management application.
 
 The completed demo should allow a user to:
 
-1. Open the OpsFlow AI web page.
+1. Open the Aurelia AI web page.
 2. Describe an operational issue or request.
 3. Submit the request.
 4. Send the request to an n8n webhook.
@@ -162,7 +162,7 @@ status = response.processing_mode;
 
 The same principle applies to priority, routing, SLA, category, and all other workflow decisions.
 
-6. Existing OpsFlow AI Behavior
+6. Existing Aurelia AI Behavior
 
 The existing workflow already implements:
 
@@ -268,7 +268,7 @@ HTTP POST
   ↓
 n8n Webhook
   ↓
-Existing OpsFlow AI workflow
+Existing Aurelia AI workflow
   ↓
 Structured result
   ↓
@@ -335,7 +335,7 @@ The application should not have multiple modules.
 
 The primary screen should contain:
 
-OpsFlow AI
+Aurelia AI
 
 AI-Powered Operations Support
 
@@ -392,12 +392,12 @@ Header
 
 Display:
 
-OpsFlow AI
+Aurelia AI
 AI-Powered Operations Support
 
 Optional supporting text:
 
-Describe an operational issue or request and OpsFlow AI will analyze and route it.
+Describe an operational issue or request and Aurelia AI will analyze and route it.
 
 Keep the header compact.
 
@@ -601,7 +601,7 @@ Do NOT call another AI service.
 
 Do NOT make up instructions.
 
-This is an intentional safety behavior of OpsFlow AI.
+This is an intentional safety behavior of Aurelia AI.
 
 24. Error Handling
 
@@ -610,11 +610,11 @@ Handle only the basic errors needed for the demo.
 Empty request
 Please describe your request before submitting.
 Network/webhook failure
-Unable to reach OpsFlow AI.
+Unable to reach Aurelia AI.
 
 Please try again.
 Unexpected response
-OpsFlow AI returned an unexpected response.
+Aurelia AI returned an unexpected response.
 Server-side processing failure
 Something went wrong while processing your request.
 Please try again.
@@ -811,7 +811,7 @@ The application should feel fast and professional.
 
 35. Demo Scenarios
 
-The frontend should make it easy to demonstrate the existing OpsFlow AI behavior.
+The frontend should make it easy to demonstrate the existing Aurelia AI behavior.
 
 Known demonstration requests include:
 
@@ -969,7 +969,7 @@ Before making a significant change:
 
 Ask:
 
-Does this change directly improve the simple user-facing demonstration of OpsFlow AI?
+Does this change directly improve the simple user-facing demonstration of Aurelia AI?
 
 If no, do not make the change.
 
@@ -1125,7 +1125,7 @@ A user has an operational problem.
             ↓
 They describe it.
             ↓
-OpsFlow AI analyzes it.
+Aurelia AI analyzes it.
             ↓
 n8n orchestrates the workflow.
             ↓
@@ -1164,7 +1164,7 @@ I **would not immediately ask Claude Code to build anything**.
 
 Start with this:
 
-> **Read `CLAUDE.md` and inspect the existing repository. Do not modify any files yet. Identify the current React/Vite structure, package manager, styling approach, entry points, and build commands. Then propose the smallest implementation plan for connecting the frontend to the existing OpsFlow AI n8n webhook. Do not implement until I approve the plan.**
+> **Read `CLAUDE.md` and inspect the existing repository. Do not modify any files yet. Identify the current React/Vite structure, package manager, styling approach, entry points, and build commands. Then propose the smallest implementation plan for connecting the frontend to the existing Aurelia AI n8n webhook. Do not implement until I approve the plan.**
 
 That gives us a controlled start.
 

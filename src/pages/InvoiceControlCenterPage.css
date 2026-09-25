@@ -1,0 +1,177 @@
+.aicc-page {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.aicc-header {
+  max-width: 1240px;
+}
+
+.content.aicc-content {
+  max-width: 1240px;
+}
+
+/* KPI strip */
+
+.aicc-kpi-strip {
+  margin-bottom: 24px;
+}
+
+.aicc-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.aicc-kpi-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  box-shadow: 0 1px 2px rgba(17, 24, 39, 0.04);
+}
+
+.aicc-kpi-label {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.aicc-kpi-value {
+  font-size: 26px;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+/* Main operational area — full-width stack so the attention table has room */
+
+.aicc-main-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.aicc-panel {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 28px;
+  box-shadow: 0 1px 2px rgba(17, 24, 39, 0.04);
+}
+
+.aicc-panel-heading {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 17px;
+  margin: 0 0 18px;
+}
+
+.aicc-process-panel .form-error {
+  margin-top: 12px;
+}
+
+.aicc-process-panel .submit-button {
+  margin-top: 16px;
+}
+
+/*
+  The result/table/status components below already render their own card
+  chrome (border, radius, shadow, background) because they're also used
+  standalone elsewhere. Nested inside an aicc-panel — which already provides
+  that chrome — repeating it produces a "card inside a card". These scoped
+  overrides strip the redundant outer chrome and replace it with a plain
+  top divider, without touching the components themselves.
+*/
+.aicc-process-panel .invoice-result {
+  margin-top: 24px;
+  padding: 24px 0 0;
+  background: none;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.aicc-attention-panel {
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.aicc-attention-panel .ops-table-wrapper {
+  border: none;
+  border-radius: 0;
+}
+
+.aicc-attention-panel .ops-empty,
+.aicc-attention-panel .ops-error {
+  background: none;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+}
+
+/* Attention Center */
+
+.aicc-attention-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.aicc-attention-stat {
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.aicc-attention-stat-label {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.aicc-attention-stat-value {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.aicc-attention-toggle {
+  margin-top: 14px;
+}
+
+/* Lower breakdown sections */
+
+.aicc-breakdown-panel {
+  margin-bottom: 24px;
+}
+
+@media (max-width: 900px) {
+  .aicc-kpi-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 600px) {
+  .aicc-attention-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .aicc-panel {
+    padding: 20px;
+  }
+}

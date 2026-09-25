@@ -7,8 +7,24 @@ const PROCESSING_MODE_LABELS: Record<string, string> = {
   Investigation: 'Investigation Required',
 }
 
+const PROCESSING_MODE_CLASSES: Record<string, string> = {
+  Automatic: 'badge--mode-automatic',
+  'Human Review': 'badge--mode-human-review',
+  Investigation: 'badge--mode-investigation',
+}
+
+const PRIORITY_CLASSES: Record<string, string> = {
+  Critical: 'badge--priority-critical',
+  High: 'badge--priority-high',
+  Normal: 'badge--priority-normal',
+}
+
 function formatProcessingMode(mode: string): string {
   return PROCESSING_MODE_LABELS[mode] ?? mode
+}
+
+function formatSlaHours(hours: number): string {
+  return hours === 1 ? '1 hour' : `${hours} hours`
 }
 
 interface RequestResultProps {
@@ -16,9 +32,25 @@ interface RequestResultProps {
 }
 
 function RequestResult({ result }: RequestResultProps) {
+  const modeClass = PROCESSING_MODE_CLASSES[result.processing_mode] ?? 'badge--mode-default'
+  const priorityClass = PRIORITY_CLASSES[result.priority] ?? 'badge--priority-default'
+
   return (
     <section className="result" aria-live="polite">
-      <h2 className="result-heading">{formatProcessingMode(result.processing_mode)}</h2>
+      <div className="result-summary">
+        <div className="summary-item">
+          <span className="summary-label">Processing Mode</span>
+          <span className={`badge ${modeClass}`}>{formatProcessingMode(result.processing_mode)}</span>
+        </div>
+        <div className="summary-item">
+          <span className="summary-label">Priority</span>
+          <span className={`badge ${priorityClass}`}>{result.priority}</span>
+        </div>
+        <div className="summary-item">
+          <span className="summary-label">SLA</span>
+          <span className="summary-sla">{formatSlaHours(result.sla_hours)}</span>
+        </div>
+      </div>
 
       <dl className="result-grid">
         <div className="result-item">
@@ -26,24 +58,16 @@ function RequestResult({ result }: RequestResultProps) {
           <dd>{result.category}</dd>
         </div>
         <div className="result-item">
-          <dt>Affected Department</dt>
-          <dd>{result.affected_department}</dd>
-        </div>
-        <div className="result-item">
           <dt>Routing Department</dt>
           <dd>{result.routing_department}</dd>
         </div>
         <div className="result-item">
+          <dt>Affected Department</dt>
+          <dd>{result.affected_department}</dd>
+        </div>
+        <div className="result-item">
           <dt>Confidence</dt>
           <dd>{Math.round(result.confidence * 100)}%</dd>
-        </div>
-        <div className="result-item">
-          <dt>Priority</dt>
-          <dd>{result.priority}</dd>
-        </div>
-        <div className="result-item">
-          <dt>SLA</dt>
-          <dd>{result.sla_hours} hours</dd>
         </div>
         <div className="result-item">
           <dt>Review Status</dt>
@@ -61,7 +85,7 @@ function RequestResult({ result }: RequestResultProps) {
 
       {result.knowledge_status === 'Knowledge Article Found' ? (
         <div className="result-knowledge">
-          <h3>Knowledge Guidance</h3>
+          <h3 className="knowledge-heading">Knowledge Guidance</h3>
           <p className="knowledge-title">{result.knowledge_article}</p>
           {result.response_status === 'Generated' && (
             <p className="knowledge-response">{result.response}</p>
@@ -69,13 +93,15 @@ function RequestResult({ result }: RequestResultProps) {
         </div>
       ) : (
         <div className="result-knowledge result-knowledge--empty">
-          <h3>No Knowledge Article Available</h3>
+          <h3 className="knowledge-heading">No Knowledge Article Available</h3>
           <p>
             There is currently no matching organizational knowledge article for this request.
             Further handling is required.
           </p>
         </div>
       )}
+
+      <p className="result-trace">Request ID: {result.request_id}</p>
     </section>
   )
 }

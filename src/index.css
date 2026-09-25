@@ -1,15 +1,25 @@
 :root {
-  --color-bg: #fafafa;
+  --color-bg: #f8f7f9;
   --color-surface: #ffffff;
-  --color-text: #1a1f26;
-  --color-text-muted: #5b6472;
+  --color-text: #111827;
+  --color-text-muted: #64748b;
   --color-border: #e2e5e9;
-  --color-accent: #0f766e;
-  --color-accent-hover: #0b5a54;
+  --color-accent: #d81b60;
+  --color-accent-hover: #c2185b;
+  --color-accent-bg: #fce7f3;
   --color-error: #b3261e;
   --color-error-bg: #fdecea;
 
-  --font-sans: system-ui, 'Segoe UI', Roboto, sans-serif;
+  /* Aurelia AI brand tokens (canonical values — mirrored into --color-* above) */
+  --aurelia-navy: #111827;
+  --aurelia-near-black: #0f1115;
+  --aurelia-fuchsia: #d81b60;
+  --aurelia-crimson: #c2185b;
+  --aurelia-rose: #fce7f3;
+  --aurelia-bg: #f8f7f9;
+  --aurelia-muted: #64748b;
+
+  --font-sans: 'Inter', system-ui, 'Segoe UI', Roboto, sans-serif;
 
   color-scheme: light;
   color: var(--color-text);

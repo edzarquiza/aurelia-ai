@@ -1,0 +1,122 @@
+.invoice-upload {
+  border: 1px dashed var(--color-border);
+  border-radius: 10px;
+  padding: 40px 24px;
+  text-align: center;
+  background: var(--color-bg);
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.invoice-upload--drag-over {
+  border-color: var(--color-accent);
+  background: var(--color-accent-bg);
+}
+
+.invoice-upload-primary {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--color-text);
+  margin: 0 0 4px;
+}
+
+.invoice-upload-secondary {
+  font-size: 13px;
+  color: var(--color-text-muted);
+  margin: 0 0 12px;
+}
+
+.invoice-upload-browse {
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-accent);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 10px 16px;
+  cursor: pointer;
+}
+
+.invoice-upload-browse:hover:not(:disabled) {
+  border-color: var(--color-accent);
+}
+
+.invoice-upload-browse:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.invoice-upload-browse:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.invoice-upload-input {
+  display: none;
+}
+
+.invoice-upload--selected {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  text-align: left;
+  padding: 20px 24px;
+  border-style: solid;
+}
+
+.invoice-file-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.invoice-file-name {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--color-text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.invoice-file-size {
+  font-size: 13px;
+  color: var(--color-text-muted);
+}
+
+.invoice-file-remove {
+  flex-shrink: 0;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-error);
+  background: transparent;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 10px 16px;
+  cursor: pointer;
+}
+
+.invoice-file-remove:hover:not(:disabled) {
+  background: var(--color-error-bg);
+}
+
+.invoice-file-remove:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.invoice-file-remove:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+@media (max-width: 480px) {
+  .invoice-upload--selected {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+  }
+}

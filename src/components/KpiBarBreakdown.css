@@ -1,0 +1,44 @@
+.kpi-breakdown {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.kpi-breakdown-row {
+  display: grid;
+  grid-template-columns: 160px 1fr 48px;
+  align-items: center;
+  gap: 12px;
+}
+
+.kpi-breakdown-label {
+  font-size: 14px;
+  color: var(--color-text-muted);
+}
+
+.kpi-breakdown-track {
+  height: 8px;
+  border-radius: 999px;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  overflow: hidden;
+}
+
+.kpi-breakdown-fill {
+  height: 100%;
+  background: var(--color-accent);
+  border-radius: 999px;
+}
+
+.kpi-breakdown-value {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text);
+  text-align: right;
+}
+
+@media (max-width: 600px) {
+  .kpi-breakdown-row {
+    grid-template-columns: 110px 1fr 40px;
+  }
+}

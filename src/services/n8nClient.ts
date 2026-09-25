@@ -6,7 +6,7 @@ const WEBHOOK_URL = import.meta.env.VITE_N8N_WEBHOOK_URL as string | undefined
 
 export async function submitRequest(requestText: string): Promise<OpsFlowResponse> {
   if (!WEBHOOK_URL) {
-    throw new N8nClientError('Unable to reach OpsFlow AI. Please try again.')
+    throw new N8nClientError('Unable to reach Aurelia AI. Please try again.')
   }
 
   const payload: OpsFlowRequest = { request_text: requestText }
@@ -19,7 +19,7 @@ export async function submitRequest(requestText: string): Promise<OpsFlowRespons
       body: JSON.stringify(payload),
     })
   } catch {
-    throw new N8nClientError('Unable to reach OpsFlow AI. Please try again.')
+    throw new N8nClientError('Unable to reach Aurelia AI. Please try again.')
   }
 
   if (!httpResponse.ok) {
@@ -30,11 +30,11 @@ export async function submitRequest(requestText: string): Promise<OpsFlowRespons
   try {
     data = (await httpResponse.json()) as OpsFlowResponse
   } catch {
-    throw new N8nClientError('OpsFlow AI returned an unexpected response.')
+    throw new N8nClientError('Aurelia AI returned an unexpected response.')
   }
 
   if (!data || typeof data !== 'object' || !('request_id' in data)) {
-    throw new N8nClientError('OpsFlow AI returned an unexpected response.')
+    throw new N8nClientError('Aurelia AI returned an unexpected response.')
   }
 
   return data

@@ -14,20 +14,33 @@
 
 .header h1 {
   font-size: 32px;
-  margin: 0 0 6px;
+  margin: 0 0 4px;
   letter-spacing: -0.5px;
 }
 
+.aicc-brand-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.aicc-brand-row h1 {
+  margin: 0;
+}
+
 .subtitle {
-  font-size: 16px;
+  font-size: 15px;
   color: var(--color-accent);
   font-weight: 500;
-  margin-bottom: 12px;
+  margin-bottom: 14px;
 }
 
 .description {
   font-size: 15px;
   color: var(--color-text-muted);
+  max-width: 480px;
+  margin-inline: auto;
 }
 
 .content {
@@ -43,35 +56,38 @@
   padding: 32px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
 }
 
 .form-heading {
   font-size: 20px;
-  margin: 0 0 8px;
+  margin: 0 0 12px;
 }
 
 .field-label {
   font-size: 14px;
   font-weight: 500;
   color: var(--color-text-muted);
+  margin-bottom: 2px;
 }
 
 .request-textarea {
   width: 100%;
   font: inherit;
   font-size: 15px;
-  padding: 12px 14px;
+  padding: 14px 16px;
   border: 1px solid var(--color-border);
   border-radius: 8px;
   resize: vertical;
   color: var(--color-text);
   background: var(--color-bg);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
 .request-textarea:focus-visible {
-  outline: 2px solid var(--color-accent);
-  outline-offset: 1px;
+  outline: none;
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px var(--color-accent-bg);
 }
 
 .request-textarea:disabled {
@@ -87,6 +103,9 @@
 }
 
 .submit-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   align-self: flex-start;
   font: inherit;
   font-size: 15px;
@@ -96,6 +115,7 @@
   border: none;
   border-radius: 8px;
   padding: 12px 24px;
+  margin-top: 4px;
   cursor: pointer;
   transition: background-color 0.15s ease;
 }
@@ -110,8 +130,30 @@
 }
 
 .submit-button:disabled {
-  opacity: 0.6;
+  opacity: 0.75;
   cursor: not-allowed;
+}
+
+.submit-indicator {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-top-color: #fff;
+  flex-shrink: 0;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .submit-indicator {
+    animation: none;
+  }
 }
 
 @media (max-width: 480px) {
@@ -122,4 +164,52 @@
   .submit-button {
     align-self: stretch;
   }
+}
+
+/* Shared data-loading states (KPI strip, Attention Center) */
+
+.ops-refresh-button {
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 10px 16px;
+  cursor: pointer;
+}
+
+.ops-refresh-button:hover:not(:disabled) {
+  border-color: var(--color-accent);
+}
+
+.ops-refresh-button:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.ops-refresh-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.ops-status-message {
+  font-size: 15px;
+  color: var(--color-text-muted);
+  padding: 24px 0;
+  text-align: center;
+}
+
+.ops-error {
+  background: var(--color-error-bg);
+  border: 1px solid #f2c9c9;
+  border-radius: 10px;
+  padding: 20px 24px;
+  text-align: center;
+}
+
+.ops-error p {
+  color: var(--color-error);
+  margin: 0 0 12px;
 }
